@@ -113,10 +113,10 @@ public:
     void afficherCorps()
     {
         // donner la couleur de la tête À MODIFIER
-        glVertexAttrib3f(locColor, 1.0, 1.0, 1.0); // blanc
+        glVertexAttrib3f(locColor, .5f, .5f, .5f); // blanc
 
-        // afficherRepereCourant( ); // débogage: montrer le repère à la position courante
-
+        afficherRepereCourant( ); // débogage: montrer le repère à la position courante
+        
         //Afficher la boite
         // afficher le bon modèle
         switch (Etat::modele)
@@ -124,7 +124,7 @@ public:
         default:
         case 1: // la tête (cube)
             matrModel.PushMatrix(); {
-                matrModel.Translate( 0.0, 2.0, 0.0 ); // (bidon) À MODIFIER
+                matrModel.Translate( 0.0, 0.0, 0.0 ); // (bidon) À MODIFIER
 
                 glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                 afficherCube();
@@ -142,10 +142,10 @@ public:
         }
 
         // et son corps
-        glVertexAttrib3f(locColor, 0.0, 1.0, 0.0); // vert À MODIFIER
+        glVertexAttrib3f(locColor, 0.4, .4, 0.4); // vert À MODIFIER
         matrModel.PushMatrix(); {
-            matrModel.Translate(0.0, 2.0, 0.0); // (bidon) À MODIFIER
-
+            matrModel.Translate(0.0, -0.5, -1.5); // (bidon) À MODIFIER
+            matrModel.Scale(1.0, 1.0, 2.0);
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherCube();
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
@@ -158,18 +158,35 @@ public:
     void afficherOreille()
     {
         // ajouter une ou des transformations afin de tracer des oreilles
-        glVertexAttrib3f(locColor, 0.5, 0.5, 1.0); // violet À MODIFIER
+        glVertexAttrib3f(locColor, 0.6, 0.6, 0.6); // violet À MODIFIER
         matrModel.PushMatrix(); {
 
+            float angleOreille1 = 45 - angleRotation;
+            float angleRadOreille1 = angleOreille1 * M_PI / 180 - atan2(.25, .5);
+            float distanceOreille1 = sqrt(pow(.5, 2) + pow(.25, 2));
+
+            float angleOreille2 = 135 + angleRotation;
+            float angleRadOreille2 = angleOreille2 * M_PI / 180 + atan2(.25, .5);
+            float distanceOreille2 = -sqrt(pow(.5, 2) + pow(.25, 2));
+
             // créer la première oreille
-            matrModel.Translate(2.0, 2.0, 0.0); // (bidon) À MODIFIER
+            matrModel.PushMatrix();
+            matrModel.Rotate(90.0, 1, 0, 0);
+            matrModel.Rotate(angleOreille1, 0, 1, 0);
+            matrModel.Translate(distanceOreille1 * cos(angleRadOreille1),-0.5, distanceOreille1 * sin(angleRadOreille1));
+            matrModel.Scale(3.0, 1.0, 1.0);
             // afficherRepereCourant( ); // débogage: montrer le repère à la position courante
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherQuad();
-
+            matrModel.PopMatrix();
             // créer la seconde oreille
-            //...
-
+            
+            matrModel.Rotate(90.0, 1, 0, 0);
+            matrModel.Rotate(angleOreille2, 0, 1, 0);
+            matrModel.Translate(distanceOreille2 * cos(angleRadOreille2), -0.5, distanceOreille2 * sin(angleRadOreille2));
+            matrModel.Scale(3.0, 1.0, 1.0);
+            glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+            afficherQuad();
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
     }
 
@@ -179,7 +196,7 @@ public:
     void afficherPattes()
     {
         // donner la couleur des pattes
-        glVertexAttrib3f(locColor, 0.9, 0.4, 0.0); // marron À MODIFIER
+        glVertexAttrib3f(locColor, 0.5, 0.5, 0.5); // marron À MODIFIER
 
         // ajouter une ou des transformations afin de tracer chacune des pattes
         matrModel.PushMatrix();{
