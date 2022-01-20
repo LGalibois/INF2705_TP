@@ -112,10 +112,7 @@ public:
     //   Les deux faces voisines de la tête et du corps sont collées
     void afficherCorps()
     {
-        // donner la couleur de la tête À MODIFIER
-        glVertexAttrib3f(locColor, .5f, .5f, .5f); // blanc
-
-        afficherRepereCourant( ); // débogage: montrer le repère à la position courante
+        glVertexAttrib3f(locColor, .5f, .5f, .5f);
         
         //Afficher la boite
         // afficher le bon modèle
@@ -124,8 +121,6 @@ public:
         default:
         case 1: // la tête (cube)
             matrModel.PushMatrix(); {
-                matrModel.Translate( 0.0, 0.0, 0.0 ); // (bidon) À MODIFIER
-
                 glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                 afficherCube();
             }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
@@ -142,9 +137,9 @@ public:
         }
 
         // et son corps
-        glVertexAttrib3f(locColor, 0.4, .4, 0.4); // vert À MODIFIER
+        glVertexAttrib3f(locColor, 0.4, .4, 0.4);
         matrModel.PushMatrix(); {
-            matrModel.Translate(0.0, -0.5, -1.5); // (bidon) À MODIFIER
+            matrModel.Translate(0.0, -0.5, -1.5);
             matrModel.Scale(1.0, 1.0, 2.0);
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherCube();
@@ -158,7 +153,7 @@ public:
     void afficherOreille()
     {
         // ajouter une ou des transformations afin de tracer des oreilles
-        glVertexAttrib3f(locColor, 0.6, 0.6, 0.6); // violet À MODIFIER
+        glVertexAttrib3f(locColor, 0.6, 0.6, 0.6);
         matrModel.PushMatrix(); {
 
             float angleOreille1 = 45 - angleRotation;
@@ -175,18 +170,18 @@ public:
             matrModel.Rotate(angleOreille1, 0, 1, 0);
             matrModel.Translate(distanceOreille1 * cos(angleRadOreille1),-0.5, distanceOreille1 * sin(angleRadOreille1));
             matrModel.Scale(3.0, 1.0, 1.0);
-            // afficherRepereCourant( ); // débogage: montrer le repère à la position courante
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherQuad();
             matrModel.PopMatrix();
+
             // créer la seconde oreille
-            
             matrModel.Rotate(90.0, 1, 0, 0);
             matrModel.Rotate(angleOreille2, 0, 1, 0);
             matrModel.Translate(distanceOreille2 * cos(angleRadOreille2), -0.5, distanceOreille2 * sin(angleRadOreille2));
             matrModel.Scale(3.0, 1.0, 1.0);
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherQuad();
+
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
     }
 
@@ -259,7 +254,6 @@ public:
 
     void afficher()
     {
-        // afficherRepereCourant( ); // débogage: montrer le repère à la position courante
         matrModel.PushMatrix();{ // sauvegarder la transformation courante
 
             // ajouter une ou des transformations
@@ -267,6 +261,10 @@ public:
             //   est placé à la position courante « position[] »,
             //   est orienté selon l'angle « angleCorps » et
             //   est de taille ( taille, taille, taille ),
+            matrModel.Translate(position[0], position[1], position[2]);
+            matrModel.Rotate(angleCorps, 0.0, 1.0, 0.0);
+            matrModel.Scale(taille, taille, taille);
+
 
             // afficher le corps
             afficherCorps();
