@@ -199,12 +199,62 @@ public:
         glVertexAttrib3f(locColor, 0.5, 0.5, 0.5); // marron À MODIFIER
 
         // ajouter une ou des transformations afin de tracer chacune des pattes
-        matrModel.PushMatrix();{
-            matrModel.Translate( -2.0, 2.0, 0.0 ); // (bidon) À MODIFIER
-            // afficherRepereCourant( ); // débogage: montrer le repère à la position courante
-            glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel );
-            afficherCylindre();
-        }
+        
+        //jambe gauche avant
+        matrModel.PushMatrix();
+        matrModel.Translate(0.5, -1.0, -.5);
+        matrModel.PushMatrix();
+        matrModel.Rotate(45.0, 0.0, 1.0, 0.0);
+        matrModel.PushMatrix();
+        matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
+        matrModel.Scale(largMembre, largMembre, longMembre);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherCylindre();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+
+        //jambe droite avant
+        matrModel.PushMatrix();
+        matrModel.Translate(-0.5, -1.0, -.5);
+        matrModel.PushMatrix();
+        matrModel.Rotate(-45.0, 0.0, 1.0, 0.0);
+        matrModel.PushMatrix();
+        matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
+        matrModel.Scale(largMembre, largMembre, longMembre);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherCylindre();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+
+        //jambe gauche arrière
+        matrModel.PushMatrix();
+        matrModel.Translate(0.5, -1.0, -2.5);
+        matrModel.PushMatrix();
+        matrModel.Rotate(135.0, 0.0, 1.0, 0.0);
+        matrModel.PushMatrix();
+        matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
+        matrModel.Scale(largMembre, largMembre, longMembre);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherCylindre();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+        
+        //jambe droite arrière
+        matrModel.PushMatrix();
+        matrModel.Translate(-0.5, -1.0, -2.5);
+        matrModel.PushMatrix();
+        matrModel.Rotate(-135.0, 0.0, 1.0, 0.0);
+        matrModel.PushMatrix();
+        matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
+        matrModel.Scale(largMembre, largMembre, longMembre);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherCylindre();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
+        matrModel.PopMatrix();
     }
 
     void afficher()
