@@ -1,0 +1,26 @@
+\texttt{q} &  Quitter l'application \\
+\texttt{x} &  Activer/désactiver l'affichage des axes \\
+\texttt{i} &  Réinitiliaser le point de vue et de Dumbo\\
+\texttt{g} &  Permuter l'affichage en fil de fer ou plein \\
+\texttt{c} &  Permuter l'affichage des faces arrières \\
+\texttt{l} &  Utiliser LookAt ou Translate+Rotate pour placer la caméra \\
+\texttt{m} &  Choisir le modèle affiché: cube, théière \\
+\texttt{MOINS} &  Reculer la caméra \\
+\texttt{PLUS} &  Avancer la caméra \\
+\texttt{DROITE} &  Déplacer Dumbo vers +X \\
+\texttt{GAUCHE} &  Déplacer Dumbo vers -X \\
+\texttt{HAUT} &  Déplacer Dumbo vers +Y \\
+\texttt{BAS} &  Déplacer Dumbo vers -Y \\
+\texttt{PAGEPREC} &  Déplacer Dumbo vers +Z \\
+\texttt{PAGESUIV} &  Déplacer Dumbo vers -Z \\
+\texttt{f} &  Diminuer la taille de la tête \\
+\texttt{r} &  Augmenter la taille de la tête \\
+\texttt{VIRGULE} &  Diminuer l'angle de rotation de Dumbo\\
+\texttt{POINT} &  Augmenter l'angle de rotation de Dumbo \\
+\texttt{o} &  Diminuer l'angle de rotation des oreilles et des pattes \\
+\texttt{p} &  Augmenter l'angle de rotation des oreilles et des pattes \\
+\texttt{b} &  Incrémenter la dimension de la boite \\
+\texttt{h} &  Décrémenter la dimension de la boite \\
+\texttt{ESPACE} &  Mettre en pause ou reprendre l'animation \\
+\texttt{s} &  Sauvegarder une copie de la fenêtre dans un fichier \\
+\texttt{BOUTON GAUCHE} &  Déplacer (modifier angles) la caméra \\
