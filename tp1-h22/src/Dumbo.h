@@ -74,9 +74,15 @@ public:
 
         // (partie 2) MODIFICATIONS ICI ...
         // créer le VBO pour les sommets
-
+        glGenBuffers(1, &vboTheiereSommets);
+        glBindBuffer(GL_ARRAY_BUFFER, vboTheiereSommets);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(gTheiereSommets), gTheiereSommets, GL_STATIC_DRAW);
+        glVertexAttribPointer(locVertex, 3, GL_FLOAT, GL_FALSE, 0, 0);
         // créer le VBO la connectivité
-
+        glGenBuffers(1, &vboTheiereConnec);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboTheiereConnec);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(gTheiereConnec), gTheiereConnec, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(locVertex);
         glBindVertexArray(0);
     }
 
@@ -92,13 +98,13 @@ public:
     {
         glBindVertexArray( vao );
         // (partie 2) MODIFICATIONS ICI ...
+        matrModel.Rotate(90, 0, 1, 0);
+        matrModel.Rotate(180, 0, 0, 1);
+        matrModel.Translate(0.0, -2.0, 0.0);
         
-        // vous pouvez utiliser temporairement cette fonction pour la première partie du TP, mais vous ferez mieux dans la seconde partie du TP
-        glBegin( GL_TRIANGLES );
-        for ( unsigned int i = 0 ; i < sizeof(gTheiereConnec)/sizeof(GLuint) ; i++ )
-            glVertex3fv( &(gTheiereSommets[3*gTheiereConnec[i]] ) );
-        glEnd( );
-
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        glDrawElements(GL_TRIANGLES, sizeof(gTheiereConnec) / sizeof(GLuint) /* sizeof(gTheiereSommets) / sizeof(float) / 3*/, GL_UNSIGNED_INT, 0);
+        
         glBindVertexArray(0);
     }
 
@@ -128,7 +134,7 @@ public:
 
         case 2: // la théière
             matrModel.PushMatrix(); {
-                matrModel.Scale(0.25, 0.25, 0.25); // À MODIFIER
+                matrModel.Scale(.25, .25, .25);
 
                 glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                 afficherTheiere();
@@ -154,35 +160,30 @@ public:
     {
         // ajouter une ou des transformations afin de tracer des oreilles
         glVertexAttrib3f(locColor, 0.6, 0.6, 0.6);
-        matrModel.PushMatrix(); {
+        matrModel.PushMatrix();
 
-            float angleOreille1 = 45 - angleRotation;
-            float angleRadOreille1 = angleOreille1 * M_PI / 180 - atan2(.25, .5);
-            float distanceOreille1 = sqrt(pow(.5, 2) + pow(.25, 2));
+        // créer la première oreille
 
-            float angleOreille2 = 135 + angleRotation;
-            float angleRadOreille2 = angleOreille2 * M_PI / 180 + atan2(.25, .5);
-            float distanceOreille2 = -sqrt(pow(.5, 2) + pow(.25, 2));
+        matrModel.Translate(0.5, 0.25, -0.5);
+        matrModel.Rotate(90.0, 1, 0, 0);
+        matrModel.Rotate(45 - angleRotation, 0, 1, 0);
+        matrModel.Scale(3, 1, 1);
 
-            // créer la première oreille
-            matrModel.PushMatrix();
-            matrModel.Rotate(90.0, 1, 0, 0);
-            matrModel.Rotate(angleOreille1, 0, 1, 0);
-            matrModel.Translate(distanceOreille1 * cos(angleRadOreille1),-0.5, distanceOreille1 * sin(angleRadOreille1));
-            matrModel.Scale(3.0, 1.0, 1.0);
-            glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
-            afficherQuad();
-            matrModel.PopMatrix();
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherQuad();
+        matrModel.PopMatrix();
 
-            // créer la seconde oreille
-            matrModel.Rotate(90.0, 1, 0, 0);
-            matrModel.Rotate(angleOreille2, 0, 1, 0);
-            matrModel.Translate(distanceOreille2 * cos(angleRadOreille2), -0.5, distanceOreille2 * sin(angleRadOreille2));
-            matrModel.Scale(3.0, 1.0, 1.0);
-            glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
-            afficherQuad();
+        // créer la seconde oreille
+        
+        matrModel.PushMatrix();
+        matrModel.Translate(-0.5, 0.25, -0.5);
+        matrModel.Rotate(90.0, 1, 0, 0);
+        matrModel.Rotate(angleRotation + 135, 0, 1, 0);
+        matrModel.Scale(3, 1, 1);
 
-        }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        afficherQuad();
+        matrModel.PopMatrix();
     }
 
     // afficher les pattes
@@ -198,57 +199,41 @@ public:
         //jambe gauche avant
         matrModel.PushMatrix();
         matrModel.Translate(0.5, -1.0, -.5);
-        matrModel.PushMatrix();
         matrModel.Rotate(45.0, 0.0, 1.0, 0.0);
-        matrModel.PushMatrix();
         matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
         matrModel.Scale(largMembre, largMembre, longMembre);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
         afficherCylindre();
-        matrModel.PopMatrix();
-        matrModel.PopMatrix();
         matrModel.PopMatrix();
 
         //jambe droite avant
         matrModel.PushMatrix();
         matrModel.Translate(-0.5, -1.0, -.5);
-        matrModel.PushMatrix();
         matrModel.Rotate(-45.0, 0.0, 1.0, 0.0);
-        matrModel.PushMatrix();
         matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
         matrModel.Scale(largMembre, largMembre, longMembre);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
         afficherCylindre();
-        matrModel.PopMatrix();
-        matrModel.PopMatrix();
         matrModel.PopMatrix();
 
         //jambe gauche arrière
         matrModel.PushMatrix();
         matrModel.Translate(0.5, -1.0, -2.5);
-        matrModel.PushMatrix();
         matrModel.Rotate(135.0, 0.0, 1.0, 0.0);
-        matrModel.PushMatrix();
         matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
         matrModel.Scale(largMembre, largMembre, longMembre);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
         afficherCylindre();
-        matrModel.PopMatrix();
-        matrModel.PopMatrix();
         matrModel.PopMatrix();
         
         //jambe droite arrière
         matrModel.PushMatrix();
         matrModel.Translate(-0.5, -1.0, -2.5);
-        matrModel.PushMatrix();
         matrModel.Rotate(-135.0, 0.0, 1.0, 0.0);
-        matrModel.PushMatrix();
         matrModel.Rotate(angleRotation, 1.0, 0.0, 0.0);
         matrModel.Scale(largMembre, largMembre, longMembre);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
         afficherCylindre();
-        matrModel.PopMatrix();
-        matrModel.PopMatrix();
         matrModel.PopMatrix();
     }
 
