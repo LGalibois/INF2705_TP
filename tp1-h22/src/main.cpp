@@ -1,7 +1,6 @@
 // Prénoms, noms et matricule des membres de l'équipe:
 // - Matis Grégoire (2068029)
 // - Léonard Galibois (2074612)
-//#pragma message (": *************** Identifiez les membres de l'équipe dans le fichier 'main.cpp' et commentez cette ligne. ***************")
 
 #if defined(_WIN32) || defined(WIN32)
 #pragma warning ( disable : 4244 4305 )
