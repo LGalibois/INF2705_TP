@@ -23,7 +23,6 @@ void afficherRepereCourant( int num = 0 )
     FenetreTP::afficherAxes( 1.5, 3.0 );
 }
 
-// partie 1: Dumbo
 class Dumbo
 {
 public:
@@ -72,7 +71,6 @@ public:
         // initialiser le VAO pour la théière
         glBindVertexArray( vao );
 
-        // (partie 2) MODIFICATIONS ICI ...
         // créer le VBO pour les sommets
         glGenBuffers(1, &vboTheiereSommets);
         glBindBuffer(GL_ARRAY_BUFFER, vboTheiereSommets);
@@ -92,18 +90,16 @@ public:
         glDeleteBuffers( 1, &vboTheiereConnec );
     }
 
-    // (partie 2) Vous modifierez cette fonction pour utiliser les VBO
     // affiche une théière, dont la base est centrée en (0,0,0)
     void afficherTheiere()
     {
         glBindVertexArray( vao );
-        // (partie 2) MODIFICATIONS ICI ...
         matrModel.Rotate(90, 0, 1, 0);
         matrModel.Rotate(180, 0, 0, 1);
         matrModel.Translate(0.0, -2.0, 0.0);
         
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
-        glDrawElements(GL_TRIANGLES, sizeof(gTheiereConnec) / sizeof(GLuint) /* sizeof(gTheiereSommets) / sizeof(float) / 3*/, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(gTheiereConnec) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
         
         glBindVertexArray(0);
     }
@@ -135,7 +131,6 @@ public:
         case 2: // la théière
             matrModel.PushMatrix(); {
                 matrModel.Scale(.25, .25, .25);
-
                 glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                 afficherTheiere();
             }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
@@ -163,7 +158,6 @@ public:
         matrModel.PushMatrix();
 
         // créer la première oreille
-
         matrModel.Translate(0.5, 0.25, -0.5);
         matrModel.Rotate(90.0, 1, 0, 0);
         matrModel.Rotate(45 - angleRotation, 0, 1, 0);
@@ -174,7 +168,6 @@ public:
         matrModel.PopMatrix();
 
         // créer la seconde oreille
-        
         matrModel.PushMatrix();
         matrModel.Translate(-0.5, 0.25, -0.5);
         matrModel.Rotate(90.0, 1, 0, 0);
@@ -192,7 +185,7 @@ public:
     void afficherPattes()
     {
         // donner la couleur des pattes
-        glVertexAttrib3f(locColor, 0.5, 0.5, 0.5); // marron À MODIFIER
+        glVertexAttrib3f(locColor, 0.5, 0.5, 0.5);
 
         // ajouter une ou des transformations afin de tracer chacune des pattes
         
@@ -261,7 +254,7 @@ public:
             afficherPattes();
 
         }matrModel.PopMatrix(); glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel );
-        glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel ); // informer ...
+        glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel );
     }
 
     void calculerPhysique()
@@ -270,14 +263,17 @@ public:
         {
             static int sens[6] = { +1, +1, +1, +1, +1, +1 };
             glm::vec3 vitesse( 0.03, 0.02, 0.05 );
+
             // mouvement en X
             if ( position.x-taille <= -0.5*Etat::dimBoite ) sens[0] = +1;
             else if ( position.x+taille >= 0.5*Etat::dimBoite ) sens[0] = -1;
             position.x += 60*Etat::dt * vitesse.x * sens[0];
+
             // mouvement en Y
             if ( position.y-taille <= 0.0 ) sens[2] = +1;
             else if ( position.y+taille >= Etat::dimBoite ) sens[2] = -1;
             position.y += 60*Etat::dt * vitesse.y * sens[2];
+
             // mouvement en Z
             if ( position.z-taille <= -0.5*Etat::dimBoite ) sens[1] = +1;
             else if ( position.z+taille >= 0.5*Etat::dimBoite ) sens[1] = -1;
@@ -299,7 +295,6 @@ public:
         }
     }
 
-    // partie 2: utilisation de vbo et vao
     GLuint vao = 0;
     GLuint vboTheiereSommets = 0;
     GLuint vboTheiereConnec = 0;
