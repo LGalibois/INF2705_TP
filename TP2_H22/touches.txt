@@ -1,0 +1,28 @@
+\texttt{q} &  Quitter l'application \\
+\texttt{x} &  Activer/désactiver l'affichage des axes \\
+\texttt{v} &  Recharger les fichiers des nuanceurs et recréer le programme \\
+\texttt{ESPACE} &  Mettre en pause ou reprendre l'animation \\
+\texttt{CROCHETGAUCHE} &  Inverser l'avancement du temps (il recule) \\
+\texttt{CROCHETDROIT} &  Remettre l'avancement du temps normalement \\
+\texttt{g} &  Permuter l'affichage en fil de fer ou plein\\
+\texttt{c} &  Permuter l'affichage des faces arrières \\
+\texttt{o} &  Activer l'orbite géosynchrone \\
+\texttt{DROITE} &  Augmenter la dimension de la boîte en X \\
+\texttt{GAUCHE} &  Diminuer la dimension de la boîte en X \\
+\texttt{HAUT} &  Augmenter la dimension de la boîte en Z \\
+\texttt{BAS} &  Diminuer la dimension de la boîte en Z \\
+\texttt{PLUS} &  Incrémenter la distance de la caméra \\
+\texttt{MOINS} &  Décrémenter la distance de la caméra \\
+\texttt{i} &  Calculer ou non l'illumination de Phong \\
+\texttt{0} &  Afficher le point de vue « normal » (dans notre systeme solaire) \\
+\texttt{1} &  Afficher le point de vue de la planète 1 \\
+\texttt{2} &  Afficher le point de vue de la planète 2 \\
+\texttt{3} &  Afficher le point de vue de la planète 3 \\
+\texttt{4} &  Afficher le point de vue de la planète 4 \\
+\texttt{5} &  Afficher le point de vue de la planète 5 \\
+\texttt{6} &  Afficher le point de vue de la planète 6 \\
+\texttt{7} &  Afficher le point de vue de la planète 7 \\
+\texttt{8} &  Afficher le point de vue de la planète 8 \\
+\texttt{9} &  Afficher le point de vue de la planète 9 \\
+\texttt{d} &  Mode debug  : (ne pas utiliser le stencil) \\
+\texttt{Molette} &  Changer la distance de la caméra \\
