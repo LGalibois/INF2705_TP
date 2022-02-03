@@ -191,9 +191,10 @@ public:
     void positionnerCamera(int exoplaneteChoisie)
     {
         // partie 2: modifs ici ...
-        //Exoplanete *exoplanete = exoplanetes[exoplaneteChoisie-1];
-        //MatricePipeline mtc = ...
-        //matrVisu.setMatr( ... );
+        Exoplanete* exoplanete = exoplanetes[exoplaneteChoisie - 1];
+        MatricePipeline mtc = exoplanete->obtenirMatriceCourante();
+        matrVisu.setMatr(glm::inverse(glm::mat4(mtc)));
+
     }
 
     void afficherToutesLesExoplanetes()
@@ -241,24 +242,32 @@ public:
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
         // partie 1: modifs ici ...
-        // ...
-        //glStencilOp( GLenum sfail, GLenum zfail, GLenum pass );
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiZpos(); // paroi en +Z
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_STENCIL_TEST);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glStencilFunc(GL_ALWAYS, 1, 1);
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiXpos(); // paroi en +X
+        glVertexAttrib4f(locColorBase, 0.1, 0.1, 0.1, 1.0);
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiZneg(); // paroi en -Z
+        afficherParoiZpos(); // paroi en +Z
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiXneg(); // paroi en -X
+        glStencilFunc(GL_ALWAYS, 1, 2);
+        afficherParoiXpos(); // paroi en +X
 
-        // void glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiYneg(); // paroi en -Y
+        glStencilFunc(GL_ALWAYS, 1, 4);
+        afficherParoiZneg(); // paroi en -Z
+
+        glStencilFunc(GL_ALWAYS, 1, 8);
+        afficherParoiXneg(); // paroi en -X
+
+        glStencilFunc(GL_ALWAYS, 1, 16);
+        afficherParoiYneg(); // paroi en -Y
+
+        glStencilFunc(GL_ALWAYS, 1, 32);
+        afficherParoiYpos(); // paroi en Y
 
         glDisable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
 
         // 2) Maintenant que le stencil est rempli de valeurs aux positions des lentilles,
         // on trace les planetes de la galaxie lointaine.
@@ -271,12 +280,12 @@ public:
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
         glUniform1i(locillumination, Etat::illumination);
 
-        //glStencilOp( GLenum sfail, GLenum zfail, GLenum pass );
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
         // partie 1: modifs ici ...
         // [ au besoin, utiliser : if ( Etat::debug ) glStencilFunc( GL_ALWAYS, 1, 1 ); // pour débogguer ]
         // on trace le contenu de chaque lentille 5 fois
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
+        glStencilFunc(GL_EQUAL, 1, 63);
         // ...
         //glStencilFunc( GLenum func, GLint ref, GLuint mask );
         // ...
@@ -286,9 +295,15 @@ public:
         glUseProgram(progBase);
         // afficher les parois du trou de ver
         afficherParois();
-
         // lorsqu'on a passer dans le trou de ver, nous voyons l'ensemble des planètes
-        //if (exoplaneteChoisie)  ...
+
+        if (Etat::exoplaneteChoisie) {
+            glDisable(GL_STENCIL_TEST);
+        }
+
+        glDisable(GL_DEPTH_TEST);
+        afficherContenu();
+        glEnable(GL_DEPTH_TEST);
 
     }
     
@@ -354,6 +369,7 @@ public:
     GLint locillumination;
     // la liste des isocaedre
     std::vector<Exoplanete*> exoplanetes;
+    FormeSphere* soleil;
 };
 
 FormeCube* TrouDeVer::cubeFil = NULL;
